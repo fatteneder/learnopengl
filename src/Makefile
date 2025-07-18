@@ -6,11 +6,12 @@ BIN = ./bin
 $(shell mkdir -p $(BIN))
 
 OBJ := $(SRC:cpp=o)
-OBJ := $(addprefix $(BIN),$(OBJ))
+OBJ := $(SRC:c=o)
+OBJ := $(addprefix $(BIN)/,$(OBJ))
 
 CC = g++
 
-CPPFLAGS = -O3
+CPPFLAGS = -g # -OE
 OPENGL_FLAGS = $(shell pkgconf --cflags --libs opengl)
 GLFW_FLAGS = $(shell pkgconf --cflags --libs glfw3)
 GL_FLAGS = $(shell pkgconf --cflags --libs gl)
@@ -21,8 +22,11 @@ all: $(BIN)/main $(OBJ)
 $(BIN)/%.o: $%.cpp
 	$(CC) $< -o $@ $(FLAGS)
 
-$(BIN)/main: main.cpp
-	$(CC) $< -o $@ $(FLAGS)
+$(BIN)/glad.o: glad/src/glad.c
+	$(CC) -c $< -o $@ $(FLAGS) -I./glad/include
+
+$(BIN)/main: main.cpp $(OBJ) $(BIN)/glad.o
+	$(CC) $< -o $@ $(BIN)/glad.o $(FLAGS)
 
 clean:
 	rm -rf $(BIN)
