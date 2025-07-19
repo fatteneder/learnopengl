@@ -2,6 +2,9 @@ SRC =
 
 ###################################################
 
+# https://stackoverflow.com/a/23324703
+THISDIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+
 BIN = ./bin
 $(shell mkdir -p $(BIN))
 
@@ -11,29 +14,33 @@ OBJ := $(addprefix $(BIN)/,$(OBJ))
 
 CC = g++
 
-CPPFLAGS = -g # -OE
+CPPFLAGS = -g # -O3
+
+# flags for extern libraries
 OPENGL_FLAGS = $(shell pkgconf --cflags --libs opengl)
 GLFW_FLAGS = $(shell pkgconf --cflags --libs glfw3)
 GL_FLAGS = $(shell pkgconf --cflags --libs gl)
-FLAGS = $(CPPFLAGS) $(OPENGL_FLAGS) $(GLFW_FLAGS) $(GL_FLAGS)
+EXT_LIB_FLAGS = $(CPPFLAGS) $(OPENGL_FLAGS) $(GLFW_FLAGS) $(GL_FLAGS)
 
 all: $(BIN)/main $(OBJ)
 
 $(BIN)/%.o: %.cpp
-	$(CC) $< -o $@ $(FLAGS)
+	$(CC) $< -o $@ $(EXT_LIB_FLAGS)
 
 GLAD_FLAGS = -I./glad/include
 $(BIN)/glad.o: glad/src/glad.c
-	$(CC) -c $< -o $@ $(FLAGS) $(GLAD_FLAGS)
+	$(CC) -c $< -o $@ $(EXT_LIB_FLAGS) $(GLAD_FLAGS)
 
-# make chapter_X/Y to compile that into main
+# use `make chapter_X/Y` to compile the chapter_X/Y/main.cpp into main
+# use a static pattern rule to limit consideration of targets: https://stackoverflow.com/a/15718720
 CHAPS := $(shell ls -d chapter_*/*)
 $(CHAPS) : chapter_% : chapter_%/main.cpp $(OBJ) $(BIN)/glad.o
 	@echo compiling $@ into $(BIN)/main
-	$(CC) $@/main.cpp -o $(BIN)/main $(BIN)/glad.o $(FLAGS) $(GLAD_FLAGS)
+	$(CC) $@/main.cpp -o $(BIN)/main -I. $(BIN)/glad.o $(EXT_LIB_FLAGS) $(GLAD_FLAGS) -DCURRENT_DIR=$(THISDIR)$@
 
 $(BIN)/main: main.cpp $(OBJ) $(BIN)/glad.o
-	$(CC) $< -o $@ $(BIN)/glad.o $(FLAGS) $(GLAD_FLAGS)
+	@echo compiling main.cpp into $(BIN)/main
+	$(CC) $< -o $@ -I. $(BIN)/glad.o $(EXT_LIB_FLAGS) $(GLAD_FLAGS) -DCURRENT_DIR=$(THISDIR)
 
 clean:
 	rm -rf $(BIN)

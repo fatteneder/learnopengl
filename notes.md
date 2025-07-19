@@ -49,3 +49,32 @@ EBOs essentially contain a data array and an index array referexing the elements
 - GLSL:
   - Output of vertex shader is `vec4 gl_Position`, it is implicitly defined.
   - Output of a fragment shader is a single `vec4`, it is *not* implicitly defined.
+
+# Chapter 6 - Shaders
+
+- Inputs to vertex shaders are called vertex attributes
+- There is a max number of vertex attributes we are allowed to declare and the limit is set by hardware.
+  OpenGL guarantees that there are at least 16 4-component vertex attributes available.
+- GLSL allows for swizzling: `vec4 otherVec = someVec.xxxx + anotherVec.yxzy`. That's cool!
+  Q: How does swizzling deal with mutation when a vector appears on both sides?
+
+- The vertex shader *should* receive some input to do any work.
+  The input it receives comes directly from the vertex data that we set up in the C program.
+  To this end we have to apply the `(layout = 0)` qualifier.
+  FFIW one can also use `glGetAttribLocation` to query the qualifier and then set it ...
+
+- The fragment shader requires its output to be a vec4 color output!
+
+- Using the same name for the output in the vertex shader and the input in the fragment shader
+  makes OpenGL link those variables when compiling the shader program.
+
+- Uniform is another way to send data from CPU to GPU.
+  Uniforms are global, i.e. it is unique per shader program, and it can be accessed from any shader
+  at any stage in the shader program.
+  Uniforms will keep their value unless they are reset or updated.
+  Because they are global, we only have to declare them either in the vertex or fragment shader.
+  > Note: Unused uniforms can be omitted by the GLSL compiler, which can cause nasty bugs!!!
+
+- We *have* to query uniform locations in shader programs to be able to set them.
+  We don't have to `glUseProgram` for querying their location.
+  BUt we *have* to `glUseProgram` it before setting the uniform value.
