@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 #include "common.hpp"
 #include "shader.hpp"
@@ -14,6 +15,8 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
+
+float mixValue = 0.0f;
 
 int main(void)
 {
@@ -147,6 +150,7 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         // draw something
+        shader.setFloat("mixValue", mixValue);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture0);
         glActiveTexture(GL_TEXTURE1);
@@ -178,4 +182,8 @@ void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        mixValue = std::min(mixValue+0.05f, 1.0f);
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        mixValue = std::max(mixValue-0.05f, 0.0f);
 }

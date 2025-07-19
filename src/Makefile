@@ -37,12 +37,14 @@ CHAPS := $(shell ls -d chapter_*/*)
 $(CHAPS) : chapter_% : FORCE chapter_%/main.cpp $(OBJ) $(BIN)/glad.o
 	@echo compiling $@ into $(BIN)/main
 	$(CC) $@/main.cpp -o $(BIN)/main -I. $(BIN)/glad.o $(EXT_LIB_FLAGS) $(GLAD_FLAGS) \
-		-DSOURCE_DIR=$(THISDIR)$@
+		-DSOURCE_DIR=$(THISDIR)$@ \
+		-DASSETS_DIR=$(THISDIR)../assets/
 
 $(BIN)/main: main.cpp $(OBJ) $(BIN)/glad.o
 	@echo compiling main.cpp into $(BIN)/main
 	$(CC) $< -o $@ -I. $(BIN)/glad.o $(EXT_LIB_FLAGS) $(GLAD_FLAGS) \
-		-DSOURCE_DIR=$(THISDIR)
+		-DSOURCE_DIR=$(THISDIR) \
+		-DASSETS_DIR=$(THISDIR)../assets/
 
 clean:
 	rm -rf $(BIN)

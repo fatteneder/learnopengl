@@ -60,8 +60,8 @@ int main(void)
     // bind buffer
     glBindTexture(GL_TEXTURE_2D, texture0);
     // set interpolation options
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // generate texture and mimap
@@ -102,10 +102,10 @@ int main(void)
     // set up vertices for the rectangle
     float vertices[] {
         // positions          // colors            // texture coords
-         0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f, // top right
-         0.5f, -0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f, // bottom right
+         0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  2.0f,  2.0f, // top right
+         0.5f, -0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  2.0f,  0.0f, // bottom right
         -0.5f, -0.5f,  0.0f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f, // bottom left
-        -0.5f,  0.5f,  0.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f  // top left
+        -0.5f,  0.5f,  0.0f,  1.0f,  1.0f,  0.0f,  0.0f,  2.0f  // top left
     };
     unsigned int indices[] = {
         0, 1, 3, // first triangle

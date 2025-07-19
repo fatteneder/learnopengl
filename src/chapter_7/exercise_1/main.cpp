@@ -51,7 +51,6 @@ int main(void)
 
     int width, height, nrChannels;
     unsigned char * data;
-    stbi_set_flip_vertically_on_load(true);
 
     // set up texture0
     // generate buffer

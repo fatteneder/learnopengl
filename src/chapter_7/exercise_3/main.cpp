@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <valarray>
 
 #include "common.hpp"
 #include "shader.hpp"
@@ -62,8 +63,8 @@ int main(void)
     // set interpolation options
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     // generate texture and mimap
     char fname1[] = STRING(ASSETS_DIR)"container.jpg";
     data = stbi_load(fname1, &width, &height, &nrChannels, 0);
@@ -85,8 +86,8 @@ int main(void)
     // set interpolation options
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     // generate texture and mimap
     char fname2[] = STRING(ASSETS_DIR)"awesomeface.png";
     data = stbi_load(fname2, &width, &height, &nrChannels, 0);

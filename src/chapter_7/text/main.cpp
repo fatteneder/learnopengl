@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <valarray>
 
 #include "common.hpp"
 #include "shader.hpp"

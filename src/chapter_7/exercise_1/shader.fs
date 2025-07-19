@@ -10,6 +10,8 @@ uniform sampler2D texture1;
 
 void main()
 {
+  // to flip texture0 vertically
+  vec2 yInvTexCoord = vec2(TexCoord.x, -TexCoord.y);
   FragColor = mix(texture(texture0, TexCoord),
-                  texture(texture1, TexCoord), 0.2) * vec4(ourColor, 1.0);
+                  texture(texture1, yInvTexCoord), 0.2) * vec4(ourColor, 1.0);
 }

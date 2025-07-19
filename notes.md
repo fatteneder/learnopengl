@@ -46,7 +46,7 @@ Think of a rectangle. If divided into two triangles, there are six vertices and 
 are the duplicated. You can use EBOs and remove those duplciates.
 EBOs essentially contain a data array and an index array referexing the elements of the data array.
 
-- GLSL:
+- GLSL: (also see my VulkanTutorial notes)
   - Output of vertex shader is `vec4 gl_Position`, it is implicitly defined.
   - Output of a fragment shader is a single `vec4`, it is *not* implicitly defined.
 
@@ -78,3 +78,32 @@ EBOs essentially contain a data array and an index array referexing the elements
 - We *have* to query uniform locations in shader programs to be able to set them.
   We don't have to `glUseProgram` for querying their location.
   BUt we *have* to `glUseProgram` it before setting the uniform value.
+
+# Chapter 7 - Textures
+
+- Texture 2D coords are in `[0,1]x[0,1]`, where `(0,0)` is lower left and `(1,1)` is upper right.
+  Texture coords are usually denoted as `s,t` (and `r` in 3D).
+
+- What happens for coords out of range?
+  Default OpenGL behavior is to repeat the image using only the decimal part of the coorinate
+  (e.g. periodic bdry conditions).
+  Available options:
+  - `GL_REPEAT`
+  - `GL_MIRRORED_REPEAT`, mirrors image with each repeat
+  - `GL_CLAMP_TO_EDGE`, results in stretched image for out-of-bounds
+  - `GL_CLAMP_TO_BORDER`, coords out-of-bounds get user-specified color
+
+- Texture coords are independent of resolution.
+  That's done by OpenGL figuring out how to map texture pixels (texels) to texture coords.
+
+- Mimaps are a collection of the same texture sampled at different resolutions.
+  Used to save memory and compute and to avoid artifacts when sampling textures for
+  objects that are close and far from the viewport.
+  OpenGL can create Mipmaps for us once we created a texture.
+
+- GLSL has builtin types `sampler2D, sampler3D` which together with `texture()` can
+  be used to sample textures.
+  Samples are declared as `uniform`.
+  One can assign multiple texture samples (called a texture unit) to a shader
+  using `layout = ...`.
+  OpenGL guarantees at least 16 texture units for a shader.

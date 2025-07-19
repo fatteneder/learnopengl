@@ -4,6 +4,7 @@
 - Code for book: https://github.com/JoeyDeVries/LearnOpenGL
 - OpenGL Reference: https://www.khronos.org/opengl/wiki/OpenGL_Reference
 - GLFW docs: https://www.glfw.org/documentation
+- std_image.h: https://github.com/nothings/stb/blob/master/stb_image.h
 
 # Usage
 

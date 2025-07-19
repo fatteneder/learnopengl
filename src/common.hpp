@@ -11,4 +11,9 @@
 #   error "missing definition of SOURCE_DIR"
 #endif
 
+// usage: STRING(ASSETS_DIR)
+#ifndef ASSETS_DIR
+#   error "missing definition of ASSETS_DIR"
+#endif
+
 #endif
