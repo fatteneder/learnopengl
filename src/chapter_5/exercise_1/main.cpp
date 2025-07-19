@@ -99,7 +99,7 @@ int main(void)
                           );
     glEnableVertexAttribArray(0);
 
-    // render two triangles using one vertices array
+    // vertex data for two triangles
     float vertices[] = {
         -0.5f,  0.5f, 0.0f, // top left
         -0.5f, -0.5f, 0.0f, // bottom left
@@ -109,15 +109,17 @@ int main(void)
          0.0f,  0.0f, 0.0f  // center
     };
 
+    // generate buffers
     unsigned int VBO, VAO;
     glGenBuffers(1, &VBO);
     glGenVertexArrays(1, &VAO);
 
+    // bind buffers and copy data over
     glBindVertexArray(VAO);
-
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    // set attributes
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
@@ -126,8 +128,12 @@ int main(void)
     // > vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+    // https://github.com/JoeyDeVries/LearnOpenGL/blob/master/src/1.getting_started/2.2.hello_triangle_indexed/hello_triangle_indexed.cpp
+    // > You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+    // > VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0);
 
+    glUseProgram(shaderProgram);
 
     // // wireframe mode
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -142,8 +148,6 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         // // draw something
-        glUseProgram(shaderProgram);
-        glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 

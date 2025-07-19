@@ -90,17 +90,7 @@ int main(void)
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    glUseProgram(shaderProgram);
-
-    glVertexAttribPointer(0 /* (layout = 0) in vertex shader */,
-                          3, // size of vertex attribute
-                          GL_FLOAT, // vertex data type, all vec* are GL_FLOAT
-                          GL_FALSE, // normalize data?
-                          3*sizeof(float), // stride of consecutive vertex attributes
-                          (void*)0 // offset of where position data begins in the buffer, 0 is no offset
-                          );
-    glEnableVertexAttribArray(0);
-
+    // vertex data
     float vertices[] = {
          0.5f,  0.5f, 0.0f, // top right
          0.5f, -0.5f, 0.0f, // bottom right
@@ -112,19 +102,20 @@ int main(void)
         1, 2, 3  // second triangle
     };
 
+    // generate buffesr
     unsigned int VBO, VAO, EBO;
     glGenBuffers(1, &VBO);
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &EBO);
 
+    // bind buffers and copy data over
     glBindVertexArray(VAO);
-
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+    // set attriburtes
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
@@ -133,7 +124,12 @@ int main(void)
     // > vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+    // https://github.com/JoeyDeVries/LearnOpenGL/blob/master/src/1.getting_started/2.2.hello_triangle_indexed/hello_triangle_indexed.cpp
+    // > You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+    // > VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0);
+
+    glUseProgram(shaderProgram);
 
     // wireframe mode
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -148,12 +144,10 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         // draw something
-        glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        // glDrawArrays(GL_TRIANGLES, 0, 3);
-        // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        // glDrawArrays(GL_TRIANGLES, 0, 6);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
+        // glBindVertexArray(0); // don't need to unbind every time
 
         glfwSwapBuffers(window);
         glfwPollEvents();
