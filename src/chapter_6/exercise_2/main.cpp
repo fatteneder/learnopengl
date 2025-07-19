@@ -44,7 +44,7 @@ int main(void)
 
     glViewport(0, 0, 800, 600);
 
-    Shader shader (STRING(CURRENT_DIR) "/shader.vs", STRING(CURRENT_DIR) "/shader.fs");
+    Shader shader (STRING(SOURCE_DIR) "/shader.vs", STRING(SOURCE_DIR) "/shader.fs");
 
     // set vertex data
     float vertices[] = {

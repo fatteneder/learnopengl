@@ -1,4 +1,4 @@
 -I/usr/include/
 -I./glad/include
 -I.
--DCURRENT_DIR
+-DSOURCE_DIR

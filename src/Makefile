@@ -34,13 +34,17 @@ $(BIN)/glad.o: glad/src/glad.c
 # use `make chapter_X/Y` to compile the chapter_X/Y/main.cpp into main
 # use a static pattern rule to limit consideration of targets: https://stackoverflow.com/a/15718720
 CHAPS := $(shell ls -d chapter_*/*)
-$(CHAPS) : chapter_% : chapter_%/main.cpp $(OBJ) $(BIN)/glad.o
+$(CHAPS) : chapter_% : FORCE chapter_%/main.cpp $(OBJ) $(BIN)/glad.o
 	@echo compiling $@ into $(BIN)/main
-	$(CC) $@/main.cpp -o $(BIN)/main -I. $(BIN)/glad.o $(EXT_LIB_FLAGS) $(GLAD_FLAGS) -DCURRENT_DIR=$(THISDIR)$@
+	$(CC) $@/main.cpp -o $(BIN)/main -I. $(BIN)/glad.o $(EXT_LIB_FLAGS) $(GLAD_FLAGS) \
+		-DSOURCE_DIR=$(THISDIR)$@
 
 $(BIN)/main: main.cpp $(OBJ) $(BIN)/glad.o
 	@echo compiling main.cpp into $(BIN)/main
-	$(CC) $< -o $@ -I. $(BIN)/glad.o $(EXT_LIB_FLAGS) $(GLAD_FLAGS) -DCURRENT_DIR=$(THISDIR)
+	$(CC) $< -o $@ -I. $(BIN)/glad.o $(EXT_LIB_FLAGS) $(GLAD_FLAGS) \
+		-DSOURCE_DIR=$(THISDIR)
 
 clean:
 	rm -rf $(BIN)
+
+FORCE: ;
