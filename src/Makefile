@@ -19,8 +19,7 @@ CPPFLAGS = -g # -O3
 # flags for extern libraries
 OPENGL_FLAGS = $(shell pkgconf --cflags --libs opengl)
 GLFW_FLAGS = $(shell pkgconf --cflags --libs glfw3)
-GL_FLAGS = $(shell pkgconf --cflags --libs gl)
-EXT_LIB_FLAGS = $(CPPFLAGS) $(OPENGL_FLAGS) $(GLFW_FLAGS) $(GL_FLAGS)
+EXT_LIB_FLAGS = $(CPPFLAGS) $(OPENGL_FLAGS) $(GLFW_FLAGS)
 
 all: $(BIN)/main $(OBJ)
 
