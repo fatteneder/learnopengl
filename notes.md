@@ -114,7 +114,11 @@ EBOs essentially contain a data array and an index array referexing the elements
 
 - Use `libglm` for lin alg on CPU side/non-shader code.
 
-- GLM and GLSL both use column-major layout for matrices.
+- GLM and GLSL both use column-major data-layout for matrices.
+  *However*: GLM matrices are indexed column first, e.g. `glm::mat4 m; m[0]` gives the first
+  column, not row!
+  cf. https://gamedev.net/forums/topic/653507-glm-matrix-layout/
+  or the solution of chapter_10/exercise_2 https://github.com/JoeyDeVries/LearnOpenGL/blob/master/src/1.getting_started/7.6.camera_exercise2/camera_exercise2.cpp
 
 # Chapter 9 - Coordinate Systems
 
@@ -154,3 +158,19 @@ EBOs essentially contain a data array and an index array referexing the elements
 
 - GLFW provides a depth buffer we can use for depth testing.
   Depth testing is automatically done by OpenGL, but its disabled by default.
+
+# Chapter 10 - Camera
+
+- Definition of a camera requires:
+  - position in world space
+  - direction we are looking at
+  - vector pointing to the right
+  - vector pointing upwards
+
+- Look at matrix: Combination of the ONB of the camera and its position vector to
+  transform any vector into the view space, e.g. R^-1 * (-T),
+  where `R` is the rotation matrix composed from the ONB
+  and `T` is the translation matrix.
+  We use the inverse and negative matrices, respectively, because we move the camera
+  instead the world around the camera.
+  All this is simplified with `glm::lookAt`

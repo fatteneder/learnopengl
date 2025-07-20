@@ -6,6 +6,7 @@
 - OpenGL Reference: https://www.khronos.org/opengl/wiki/OpenGL_Reference
 - GLFW docs: https://www.glfw.org/documentation
 - std_image.h: https://github.com/nothings/stb/blob/master/stb_image.h
+- GLM docs: https://glm.g-truc.net/0.9.9/api/modules.html
 
 # Usage
 
