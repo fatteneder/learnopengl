@@ -19,7 +19,8 @@ CPPFLAGS = -g # -O3
 # flags for extern libraries
 OPENGL_FLAGS = $(shell pkgconf --cflags --libs opengl)
 GLFW_FLAGS = $(shell pkgconf --cflags --libs glfw3)
-EXT_LIB_FLAGS = $(CPPFLAGS) $(OPENGL_FLAGS) $(GLFW_FLAGS)
+GLM_FLAGS = $(shell pkgconf --cflags --libs glm)
+EXT_LIB_FLAGS = $(CPPFLAGS) $(OPENGL_FLAGS) $(GLFW_FLAGS) $(GLM_FLAGS)
 
 all: $(BIN)/main $(OBJ)
 
@@ -33,13 +34,13 @@ $(BIN)/glad.o: glad/src/glad.c
 # use `make chapter_X/Y` to compile the chapter_X/Y/main.cpp into main
 # use a static pattern rule to limit consideration of targets: https://stackoverflow.com/a/15718720
 CHAPS := $(shell ls -d chapter_*/*)
-$(CHAPS) : chapter_% : FORCE chapter_%/main.cpp $(OBJ) $(BIN)/glad.o
+$(CHAPS) : chapter_% : FORCE chapter_%/main.cpp chapter_%/shader.vs chapter_%/shader.fs $(OBJ) $(BIN)/glad.o
 	@echo compiling $@ into $(BIN)/main
 	$(CC) $@/main.cpp -o $(BIN)/main -I. $(BIN)/glad.o $(EXT_LIB_FLAGS) $(GLAD_FLAGS) \
 		-DSOURCE_DIR=$(THISDIR)$@ \
 		-DASSETS_DIR=$(THISDIR)../assets/
 
-$(BIN)/main: main.cpp $(OBJ) $(BIN)/glad.o
+$(BIN)/main: main.cpp shader.vs shader.fs $(OBJ) $(BIN)/glad.o
 	@echo compiling main.cpp into $(BIN)/main
 	$(CC) $< -o $@ -I. $(BIN)/glad.o $(EXT_LIB_FLAGS) $(GLAD_FLAGS) \
 		-DSOURCE_DIR=$(THISDIR) \

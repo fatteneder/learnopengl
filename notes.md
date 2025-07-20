@@ -107,3 +107,11 @@ EBOs essentially contain a data array and an index array referexing the elements
   One can assign multiple texture samples (called a texture unit) to a shader
   using `layout = ...`.
   OpenGL guarantees at least 16 texture units for a shader.
+
+# Chapter 8 - Transformations
+
+- Mentions homogeneous coordinates, see https://en.wikipedia.org/wiki/Homogeneous_coordinates
+
+- Use `libglm` for lin alg on CPU side/non-shader code.
+
+- GLM and GLSL both use column-major layout for matrices.

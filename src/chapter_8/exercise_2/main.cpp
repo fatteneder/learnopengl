@@ -48,7 +48,8 @@ int main(void)
 
     glViewport(0, 0, 800, 600);
 
-    Shader shader (STRING(SOURCE_DIR)"/shader.vs", STRING(SOURCE_DIR)"/shader.fs");
+    Shader shader1 (STRING(SOURCE_DIR)"/shader.vs", STRING(SOURCE_DIR)"/shader.fs");
+    Shader shader2 (STRING(SOURCE_DIR)"/shader.vs", STRING(SOURCE_DIR)"/shader.fs");
 
     int width, height, nrChannels;
     unsigned char * data;
@@ -129,10 +130,6 @@ int main(void)
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(6*sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    shader.use();
-    shader.setInt("texture0", 0);
-    shader.setInt("texture1", 1);
-
     // wireframe mode
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -145,14 +142,38 @@ int main(void)
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // setup transformation
-        glm::mat4 trans = glm::mat4(1.0f);
-        trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-        unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+        glm::mat4 trans;
+        float t = (float)glfwGetTime();
 
-        // draw something
+        // first object
+        shader1.use();
+        shader1.setInt("texture0", 0);
+        shader1.setInt("texture1", 1);
+        // setup transformation
+        trans = glm::mat4(1.0f);
+        trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f)); // move to bottom left
+        trans = glm::rotate(trans, t, glm::vec3(0.0f, 0.0f, 1.0f));
+        unsigned int transformLoc1 = glGetUniformLocation(shader1.ID, "transform");
+        glUniformMatrix4fv(transformLoc1, 1, GL_FALSE, glm::value_ptr(trans));
+        // draw textures
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture0);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        // second object
+        shader2.use();
+        shader2.setInt("texture0", 0);
+        shader2.setInt("texture1", 1);
+        // setup transformation
+        trans = glm::mat4(1.0f);
+        trans = glm::translate(trans, glm::vec3(-0.5f, 0.5f, 0.0f)); // move to top right
+        trans = glm::scale(trans, glm::vec3(std::abs(std::sin(t)), std::abs(std::sin(t)), 1.0f));
+        unsigned int transformLoc2 = glGetUniformLocation(shader2.ID, "transform");
+        glUniformMatrix4fv(transformLoc2, 1, GL_FALSE, glm::value_ptr(trans));
+        // draw textures
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture0);
         glActiveTexture(GL_TEXTURE1);

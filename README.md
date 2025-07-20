@@ -1,6 +1,7 @@
 # learnopengl
 
-- Book: https://learnopengl.com/book/book_pdf.pdf
+- Book (website): https://learnopengl.com
+- Book (pdf): https://learnopengl.com/book/book_pdf.pdf
 - Code for book: https://github.com/JoeyDeVries/LearnOpenGL
 - OpenGL Reference: https://www.khronos.org/opengl/wiki/OpenGL_Reference
 - GLFW docs: https://www.glfw.org/documentation
@@ -18,5 +19,5 @@ make chapter_5/exercise_1 && ./bin/main
 
 For Ubuntu 24.02
 ```
-apt install g++ make pkgconf libopengl libopengl-dev libglfw3 libglfw3-dev
+apt install g++ make pkgconf libopengl0 libopengl-dev libglfw3 libglfw3-dev libglm-dev
 ```
