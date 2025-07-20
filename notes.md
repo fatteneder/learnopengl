@@ -115,3 +115,42 @@ EBOs essentially contain a data array and an index array referexing the elements
 - Use `libglm` for lin alg on CPU side/non-shader code.
 
 - GLM and GLSL both use column-major layout for matrices.
+
+# Chapter 9 - Coordinate Systems
+
+- 5 important coordinate spaces:
+  - local space (object space)
+  - world space
+  - view space (eye space)
+  - clip space
+  - screen space
+
+- Typical vertex coordinate transformation goes like:
+  local space as local coords -> world coords -> view coords -> clip coords -> screen coords
+  - local coords: coords relative to origin where the object begins
+  - world coords: placement object somewhere in the world
+    world coords = model matrix * local coords
+  - view coords: object as seen from the camera or viewer's point of view
+    view coords = view matrix * world coords
+  - clip coords: map view coords to `[-1,1]x[-1,1]` and then apply clipping
+    clip coords = projection matrix * view coords
+    Note: if one or two vertices of a triangle would be clipped away, OpenGL still considers them
+    to render a complete triangle
+    A projection matrix creates a kind of viewing box which is called frustum. Everything
+    inside the frustum ends up on the screen.
+  - screen coords: map clip coords to dimensions of `glViewport`
+    This step is done automatically by OpenGL.
+
+
+- Two types of projection matrices:
+  orthographic (https://en.wikipedia.org/wiki/Orthographic_projection)
+  vs perspective (https://en.wikipedia.org/wiki/3D_projection#Perspective_projection)
+  - For orthographic use `glm:ortho`
+  - For perspective use `glm:perspective`
+  See https://www.songho.ca/opengl/gl_projectionmatrix.html for derivation of both matrices.
+
+- OpenGL coord system is right-handed.
+  Book uses the convention that `x` points right and `y` to the top, hence, `z` outwards of the screen.
+
+- GLFW provides a depth buffer we can use for depth testing.
+  Depth testing is automatically done by OpenGL, but its disabled by default.

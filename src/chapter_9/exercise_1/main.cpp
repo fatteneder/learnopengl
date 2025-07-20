@@ -197,7 +197,12 @@ int main(void)
         glm::mat4 view = glm::mat4(1.0f);
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
         glm::mat4 projection;
-        projection = glm::perspective(glm::radians(45.0f), 800.0f/600.0f, 0.1f, 100.0f);
+        // when fov gets smaller, then the near and far plane are both pushed away
+        // similarly when fov gets larger, then they come close
+        float fov_min = 15.0f, fov_max = 75.0f;
+        float fov = fov_min + (fov_max - fov_min) * std::abs(std::sin(t));
+        // change the aspect-ratio 800/600 either squezzes the image vertically or horizontally
+        projection = glm::perspective(glm::radians(fov), 800.0f/600.0f, 0.1f, 100.0f);
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
         for (unsigned int i = 0; i < 10; i++) {
