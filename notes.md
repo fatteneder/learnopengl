@@ -174,3 +174,24 @@ EBOs essentially contain a data array and an index array referexing the elements
   We use the inverse and negative matrices, respectively, because we move the camera
   instead the world around the camera.
   All this is simplified with `glm::lookAt`
+
+# Chapter 12 - Colors
+
+# Chapter 13 - Basic lighting
+
+- Realistic lighting is complicated and expensive to compute.
+  We use an approximation consisting of three contributions, called Phong lighting:
+  - ambient: there is always some light coming from somewhere
+  - diffuse: surfaces facing a light are more illuminated
+  - specular: simulates the light source being reflected as a bright spot on shiny objects
+    the position of the spot depends on the viewing angle
+
+- Be careful when transforming normal vectors from local space to world space.
+  In particular, for non-uniform transformations, one can't use the same model matrix
+  used for vertices. Instead you need to compute a normal matrix,
+  cf. https://www.lighthouse3d.com/tutorials/glsl-12-tutorial/the-normal-matrix/
+
+- In earlier days these lighting effects were implemented in the vertex shader,
+  because there one has to process less data (there are more fragments than vertices).
+  Disadvantage is that the resulting color will then be interpolate which can cause artifacts.
+  The same lighting done in the vertex shader is called Gouraud shading.

@@ -139,6 +139,7 @@ int main(void)
     camera = Camera(startPos);
 
     glm::vec3 lightPos(1.0f, 1.0f, 2.0f);
+    glm::mat4 rot;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -146,6 +147,10 @@ int main(void)
         const float currentFrame = (float)glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        rot = glm::mat4(1.0f);
+        rot = glm::rotate(rot, glm::radians(180.0f * deltaTime), glm::vec3(0.0f, 1.0f, 0.0f));
+        lightPos = glm::vec3(rot * glm::vec4(lightPos, 1.0f));
 
         processInput(window);
 
@@ -169,7 +174,7 @@ int main(void)
         glBindVertexArray(cubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/3);
 
-        // render cube
+        // render cube (light source)
         lightCubeShader.use();
         lightCubeShader.setMat4("view", view);
         lightCubeShader.setMat4("projection", projection);
