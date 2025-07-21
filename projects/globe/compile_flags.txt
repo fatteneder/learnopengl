@@ -1,0 +1,5 @@
+-I/usr/include/
+-I./glad/include
+-I.
+-DSOURCE_DIR=../
+-DASSETS_DIR=../
