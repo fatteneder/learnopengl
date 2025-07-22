@@ -195,3 +195,8 @@ EBOs essentially contain a data array and an index array referexing the elements
   because there one has to process less data (there are more fragments than vertices).
   Disadvantage is that the resulting color will then be interpolate which can cause artifacts.
   The same lighting done in the vertex shader is called Gouraud shading.
+
+# Chapter 14 - Materials
+
+- List of material properties that simulate real materials in the world:
+  devernay.free.fr/cours/opengl/materials.html

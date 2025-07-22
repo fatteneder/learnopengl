@@ -186,6 +186,7 @@ int main(void)
         lightCubeShader.use();
         lightCubeShader.setMat4("view", view);
         lightCubeShader.setMat4("projection", projection);
+        lightCubeShader.setVec3("lightColor", lightColor);
 
         model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos);

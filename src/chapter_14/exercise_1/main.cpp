@@ -14,10 +14,22 @@
 #include "shader.hpp"
 #include "camera.hpp"
 
+enum MaterialKind {
+    Emerald,
+    Jade,
+    Pearl,
+    Ruby,
+    Gold,
+    N_MateriaKind,
+};
+
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 static void processInput(GLFWwindow *window);
 static void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 static void scroll_callback(GLFWwindow *window, double xpos, double ypos);
+static void setMaterial(MaterialKind kind, glm::vec3& ambientColor,
+                        glm::vec3& diffuseColor, glm::vec3& specularColor,
+                        float& shininess);
 
 Camera camera;
 float lastX = 400.0f, lastY = 300.0f;
@@ -152,41 +164,41 @@ int main(void)
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glm::vec3 lightColor;
-        float t = glfwGetTime();
-        lightColor.x = std::sin(t * 2.0f);
-        lightColor.y = std::sin(t * 0.7f);
-        lightColor.z = std::sin(t * 1.3f);
-        glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-        glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-
         // render lighting
         lightingShader.use();
         lightingShader.setVec3("viewPos", camera.position);
-        lightingShader.setVec3("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
-        lightingShader.setVec3("material.diffuse", glm::vec3(1.0f, 0.5f, 0.31f));
-        lightingShader.setVec3("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
-        lightingShader.setFloat("material.shininess", 32.0f);
         lightingShader.setVec3("light.position", lightPos);
-        lightingShader.setVec3("light.ambient", ambientColor);
-        lightingShader.setVec3("light.diffuse", diffuseColor);
+        lightingShader.setVec3("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+        lightingShader.setVec3("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f)); // darkened
         lightingShader.setVec3("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
         glm::mat4 view = camera.getViewMatrix();
         glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), 800.0f/600.0f, 0.1f, 100.0f);
-        glm::mat4 model = glm::mat4(1.0f);
         lightingShader.setMat4("view", view);
         lightingShader.setMat4("projection", projection);
-        lightingShader.setMat4("model", model);
-
-        glBindVertexArray(cubeVAO);
-        glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/3);
+        glm::vec3 pos;
+        for (int i = 0; i < MaterialKind::N_MateriaKind; i++) {
+            pos = glm::vec3(2.0f*i, 0.0, 0.0);
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, pos);
+            lightingShader.setMat4("model", model);
+            glm::vec3 ambientColor, diffuseColor, specularColor;
+            float shininess;
+            setMaterial(MaterialKind(i), ambientColor, diffuseColor, specularColor, shininess);
+            lightingShader.setVec3("material.ambient", ambientColor);
+            lightingShader.setVec3("material.diffuse", diffuseColor);
+            lightingShader.setVec3("material.specular", specularColor);
+            lightingShader.setFloat("material.shininess", shininess);
+            glBindVertexArray(cubeVAO);
+            glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/3);
+        }
 
         // render cube
         lightCubeShader.use();
         lightCubeShader.setMat4("view", view);
         lightCubeShader.setMat4("projection", projection);
 
+        glm::mat4 model = glm::mat4(1.0f);
         model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos);
         model = glm::scale(model, glm::vec3(0.2f));
@@ -213,6 +225,45 @@ int main(void)
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+}
+
+static void setMaterial(MaterialKind kind, glm::vec3& ambientColor,
+                        glm::vec3& diffuseColor, glm::vec3& specularColor,
+                        float& shininess)
+{
+    switch(kind) {
+        case MaterialKind::Emerald:
+            ambientColor = glm::vec3(0.0215f, 0.1745f, 0.0215f);
+            diffuseColor = glm::vec3(0.07568f, 0.61424f, 0.07568);
+            specularColor = glm::vec3(0.633f, 0.727811f, 0.633f);
+            shininess = 0.6f;
+            break;
+        case MaterialKind::Jade:
+            ambientColor = glm::vec3(0.135f, 0.2225f, 0.1575f);
+            diffuseColor = glm::vec3(0.54f, 0.89f, 0.63f);
+            specularColor = glm::vec3(0.316228f);
+            shininess = 0.1f;
+            break;
+        case MaterialKind::Pearl:
+            ambientColor = glm::vec3(0.25f, 0.20725f, 0.2072f);
+            diffuseColor = glm::vec3(1.0f, 0.829f, 0.829f);
+            specularColor = glm::vec3(0.296648f);
+            shininess = 0.088f;
+            break;
+        case MaterialKind::Ruby:
+            ambientColor = glm::vec3(0.1745, 0.01175, 0.01175f);
+            diffuseColor = glm::vec3(0.61424f, 0.04136f, 0.04136f);
+            specularColor = glm::vec3(0.727811f, 0.626959f, 0.626959f);
+            shininess = 0.6f;
+            break;
+        case MaterialKind::Gold:
+            ambientColor = glm::vec3(0.24725f, 0.1995f, 0.0745f);
+            diffuseColor = glm::vec3(0.75164f, 0.60648f, 0.22648f);
+            specularColor = glm::vec3(0.628281f, 0.555802f, 0.366065f);
+            shininess = 0.4f;
+            break;
+        default: assert(true);
+    };
 }
 
 // handle glfw keypress and -release events
