@@ -190,7 +190,7 @@ int main(void)
             lightingShader.setVec3("material.specular", specularColor);
             lightingShader.setFloat("material.shininess", shininess);
             glBindVertexArray(cubeVAO);
-            glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/3);
+            glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/8);
         }
 
         // render cube
@@ -205,7 +205,7 @@ int main(void)
         lightCubeShader.setMat4("model", model);
 
         glBindVertexArray(lightingVAO);
-        glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/5);
+        glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/8);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

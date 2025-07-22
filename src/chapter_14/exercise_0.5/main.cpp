@@ -180,7 +180,7 @@ int main(void)
         lightingShader.setMat4("model", model);
 
         glBindVertexArray(cubeVAO);
-        glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/3);
+        glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/8);
 
         // render cube
         lightCubeShader.use();
@@ -194,7 +194,7 @@ int main(void)
         lightCubeShader.setMat4("model", model);
 
         glBindVertexArray(lightingVAO);
-        glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/5);
+        glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/8);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
