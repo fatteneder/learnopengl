@@ -26,6 +26,10 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+glm::vec3 lightAmbientColor;
+glm::vec3 lightDiffuseColor;
+glm::vec3 lightSpecularColor;
+
 int main(void)
 {
     GLFWwindow* window;
@@ -186,6 +190,9 @@ int main(void)
     camera = Camera(startPos);
 
     glm::vec3 lightPos(1.0f, 1.0f, 2.0f);
+    lightAmbientColor = glm::vec3(0.2f);
+    lightDiffuseColor = glm::vec3(0.5f);
+    lightSpecularColor = glm::vec3(1.0f);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -206,9 +213,9 @@ int main(void)
         lightingShader.setInt("material.specular", 1);
         lightingShader.setFloat("material.shininess", 32.0f);
         lightingShader.setVec3("light.position", lightPos);
-        lightingShader.setVec3("light.ambient", glm::vec3(0.2f));
-        lightingShader.setVec3("light.diffuse", glm::vec3(0.5f));
-        lightingShader.setVec3("light.specular", glm::vec3(1.0f));
+        lightingShader.setVec3("light.ambient", lightAmbientColor);
+        lightingShader.setVec3("light.diffuse", lightDiffuseColor);
+        lightingShader.setVec3("light.specular", lightSpecularColor);
 
         glm::mat4 view = camera.getViewMatrix();
         glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), 800.0f/600.0f, 0.1f, 100.0f);
@@ -271,6 +278,18 @@ static void processInput(GLFWwindow *window)
         camera.processKeyboard(CameraMovement::LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.processKeyboard(CameraMovement::RIGHT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+        lightAmbientColor = glm::vec3(std::min(lightAmbientColor.x + 0.1, 1.0));
+    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+        lightAmbientColor = glm::vec3(std::max(lightAmbientColor.x - 0.1, 0.0));
+    if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+        lightDiffuseColor = glm::vec3(std::min(lightDiffuseColor.x + 0.1, 1.0));
+    if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+        lightDiffuseColor = glm::vec3(std::max(lightDiffuseColor.x - 0.1, 0.0));
+    if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+        lightSpecularColor = glm::vec3(std::min(lightSpecularColor.x + 0.1, 1.0));
+    if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS)
+        lightSpecularColor = glm::vec3(std::max(lightSpecularColor.x - 0.1, 0.0));
 }
 
 // handle glfw mouse movement

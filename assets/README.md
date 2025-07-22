@@ -1,3 +1,7 @@
 - `wall.jpg` from https://learnopengl.com/img/textures/wall.jpg
 - `container.jpg` from https://learnopengl.com/img/textures/container.jpg
 - `awesomeface.png` from https://learnopengl.com/img/textures/awesomeface.png
+- `container2.png` from https://learnopengl.com/img/textures/container2.png
+- `container2_specular.png` from https://github.com/JoeyDeVries/LearnOpenGL/blob/master/resources/textures/container2_specular.png
+- `container2_specular_colored.png` from https://github.com/JoeyDeVries/LearnOpenGL/blob/master/resources/textures/container2_specular_colored.png
+- `matrix.jpg` from https://github.com/JoeyDeVries/LearnOpenGL/blob/master/resources/textures/matrix.jpg

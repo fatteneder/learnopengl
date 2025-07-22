@@ -111,6 +111,26 @@ int main(void)
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(data); data = nullptr;
 
+    // set up emissionMap texture
+    unsigned int emissionMap;
+    glGenTextures(1, &emissionMap);
+    glBindTexture(GL_TEXTURE_2D, emissionMap);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // generate texture and mimap
+    fname = STRING(ASSETS_DIR)"matrix.jpg";
+    data = stbi_load(fname.c_str(), &width, &height, &nrChannels, 0);
+    if (!data) {
+        std::cout << "failed to load texture " << fname << std::endl;
+        return -1;
+    }
+    // note: .jpg is stored as RGB
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    stbi_image_free(data); data = nullptr;
+
 
     // set up vertices for a cube
     float vertices[] = {
@@ -204,6 +224,7 @@ int main(void)
         lightingShader.setVec3("viewPos", camera.position);
         lightingShader.setInt("material.diffuse", 0);
         lightingShader.setInt("material.specular", 1);
+        lightingShader.setInt("material.emission", 2);
         lightingShader.setFloat("material.shininess", 32.0f);
         lightingShader.setVec3("light.position", lightPos);
         lightingShader.setVec3("light.ambient", glm::vec3(0.2f));
@@ -221,6 +242,8 @@ int main(void)
         glBindTexture(GL_TEXTURE_2D, diffuseMap);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, specularMap);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, emissionMap);
         glBindVertexArray(cubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/8);
 

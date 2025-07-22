@@ -200,3 +200,21 @@ EBOs essentially contain a data array and an index array referexing the elements
 
 - List of material properties that simulate real materials in the world:
   devernay.free.fr/cours/opengl/materials.html
+
+# Chapter 15 - Lighting Maps
+
+- The idea is to reuse textures to assign a unique ambient, diffuse and
+  specular color for each fragment's position.
+  (actually ambient and diffuse color should be the same anyways)
+
+- Note: The book puts a `sampler2D` inside the `Material` struct definition in the fragment shader.
+  `sampler2D` is an opaque type, which GLSL only allows to instantiate via a uniform.
+  Because `Material` now also has a field of type `sampler2D`, we can only use it as a uniform.
+
+- Using a diffuse map and a specular map allows one to make different parts of a object
+  appears as they are truely different materials. Take the wooden box example from this
+  chapter. The wood is not supposed to show a specular effect, but the steel frame should!
+  To this end, one should make a copy of the texture used for the diffuse color,
+  convert it to a grayscale image and then use it as the specular map.
+  Regions which appear black will have no specular effect.
+  Simple but effective - I love it :)

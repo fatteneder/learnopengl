@@ -100,7 +100,7 @@ int main(void)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // generate texture and mimap
-    fname = STRING(ASSETS_DIR)"container2_specular.png";
+    fname = STRING(ASSETS_DIR)"container2_specular_colored.png";
     data = stbi_load(fname.c_str(), &width, &height, &nrChannels, 0);
     if (!data) {
         std::cout << "failed to load texture " << fname << std::endl;

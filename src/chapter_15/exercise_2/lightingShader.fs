@@ -39,7 +39,7 @@ void main()
   vec3 reflectDir = reflect(-lightDir, norm); // - because lightdir Points from fragment to light source
   int shininess = 32;
   float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-  vec3 specularColor = vec3(texture(material.specular, texCoord));
+  vec3 specularColor = vec3(1.0) - vec3(texture(material.specular, texCoord));
   vec3 specular = light.specular * spec * specularColor;
 
   FragColor = vec4(ambient + diffuse + specular, 1.0);
