@@ -26,6 +26,10 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+float ambientStrength = 0.1f;
+float specularStrength = 0.5f;
+int shininess = 32;
+
 int main(void)
 {
     GLFWwindow* window;
@@ -158,6 +162,9 @@ int main(void)
         lightingShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
         lightingShader.setVec3("lightPos", lightPos);
         lightingShader.setVec3("viewPos", camera.position);
+        lightingShader.setFloat("ambientStrength", ambientStrength);
+        lightingShader.setFloat("specularStrength", specularStrength);
+        lightingShader.setInt("shininess", shininess);
 
         glm::mat4 view = camera.getViewMatrix();
         glm::mat4 projection = glm::perspective(glm::radians(camera.zoom), 800.0f/600.0f, 0.1f, 100.0f);
@@ -216,6 +223,18 @@ static void processInput(GLFWwindow *window)
         camera.processKeyboard(CameraMovement::LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.processKeyboard(CameraMovement::RIGHT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+        ambientStrength = std::min(ambientStrength+0.1f, 1.0f);
+    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+        ambientStrength = std::max(ambientStrength-0.1f, 0.0f);
+    if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+        specularStrength = std::min(specularStrength+0.1f, 1.0f);
+    if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+        specularStrength = std::max(specularStrength-0.1f, 0.0f);
+    if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+        shininess = std::min(shininess+16, 256);
+    if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS)
+        shininess = std::max(shininess-16, 0);
 }
 
 // handle glfw mouse movement
