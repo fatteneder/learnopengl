@@ -218,3 +218,16 @@ EBOs essentially contain a data array and an index array referexing the elements
   convert it to a grayscale image and then use it as the specular map.
   Regions which appear black will have no specular effect.
   Simple but effective - I love it :)
+
+# Chapter 16 - Light Casters
+
+- Directional light refers to parallel infalling light rays, which is a good approx
+  for global light, e.g. light emitted by a source far from the object.
+
+- Point lights radiate in all directions and their intensity decreases with distance.
+  This intensity decrease is called `attenuation`.
+  See https://wiki.ogre3d.org/tiki-index.php?page=-Point+Light+Attenuation
+  for a commonly used attenuation function and a few sets of parameters for different scenarios.
+
+- Spot light is a point light which emits light in a limited range of directions,
+  think of a flashlight.
