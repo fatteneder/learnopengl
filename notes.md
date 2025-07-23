@@ -231,3 +231,7 @@ EBOs essentially contain a data array and an index array referexing the elements
 
 - Spot light is a point light which emits light in a limited range of directions,
   think of a flashlight.
+
+# Chapter 17 - Multiple lights
+
+
