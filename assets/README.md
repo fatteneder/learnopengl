@@ -5,3 +5,4 @@
 - `container2_specular.png` from https://github.com/JoeyDeVries/LearnOpenGL/blob/master/resources/textures/container2_specular.png
 - `container2_specular_colored.png` from https://github.com/JoeyDeVries/LearnOpenGL/blob/master/resources/textures/container2_specular_colored.png
 - `matrix.jpg` from https://github.com/JoeyDeVries/LearnOpenGL/blob/master/resources/textures/matrix.jpg
+- `backpack.zip` from https://learnopengl.com/data/models/backpack.zip

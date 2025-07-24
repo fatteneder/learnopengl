@@ -234,4 +234,11 @@ EBOs essentially contain a data array and an index array referexing the elements
 
 # Chapter 17 - Multiple lights
 
+- You can define arrays of variables or structs in GLSL, and also declare them as uniform.
+  To then set the fields of an element of an array, just use ordinary indexing when
+  you query the uniform name on the C side, e.g. `glGetUniformLocation(id, "pointLights[0].position")`.
 
+# Chapter 19 - Assimp
+
+- Assimp stands for Open Asset Import Library.
+  Its a generlized loader for many asset data formats.

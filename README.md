@@ -20,5 +20,5 @@ make chapter_5/exercise_1 && ./bin/main
 
 For Ubuntu 24.02
 ```
-apt install g++ make pkgconf libopengl0 libopengl-dev libglfw3 libglfw3-dev libglm-dev
+apt install g++ make pkgconf libopengl0 libopengl-dev libglfw3 libglfw3-dev libglm-dev libassimp-dev libassimp5
 ```
